@@ -43,6 +43,6 @@ def store_json_data(data, filename):
     print(f"Data stored in {filename} successfully.")
     
 def get_history(symbol):
-    
-    return None
+    # sachin stop doing non sense things
+    return "sachin did nthg"
 
