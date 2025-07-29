@@ -5,7 +5,7 @@ public class Portfolio {
     private int stockQuantity;
     private BigDecimal moneyInvested;
 
-    public Portfolio(int symbolId, int stockQuantity, BigDecimal moneyInvested) {
+    Portfolio(int symbolId, int stockQuantity, BigDecimal moneyInvested) {
         this.symbolId = symbolId;
         this.stockQuantity = stockQuantity;
         this.moneyInvested = moneyInvested;

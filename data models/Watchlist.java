@@ -2,7 +2,7 @@ public class Watchlist {
     private int watchlistId;
     private String name;
 
-    public Watchlist(int watchlistId, String name) {
+    Watchlist(int watchlistId, String name) {
         this.watchlistId = watchlistId;
         this.name = name;
     }
