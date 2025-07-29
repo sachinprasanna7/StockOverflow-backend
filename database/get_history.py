@@ -44,4 +44,5 @@ def store_json_data(data, filename):
     
 def get_history(symbol):
     
-    # m
+    return None
+
