@@ -4,7 +4,7 @@ public class Stock {
     private String companyName;
 
     // Constructor
-    public Stock(int symbolId, String symbol, String companyName) {
+    Stock(int symbolId, String symbol, String companyName) {
         this.symbolId = symbolId;
         this.symbol = symbol;
         this.companyName = companyName;

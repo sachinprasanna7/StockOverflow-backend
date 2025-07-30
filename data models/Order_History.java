@@ -20,10 +20,10 @@ public class Order_History {
         COMPLETED,
         CANCELLED
     }
-    public orderStatusEnum orderStatus;
+    private orderStatusEnum orderStatus;
 
 
-    public Order_History(int orderId, LocalDateTime timeOrdered, LocalDateTime timeCompleted,
+    Order_History(int orderId, LocalDateTime timeOrdered, LocalDateTime timeCompleted,
                         int symbolId, OrderTypeEnum orderType, int stockQuantity,
                         BigDecimal transactionAmount, boolean isBuy, orderStatusEnum orderStatus) {
         this.orderId = orderId;

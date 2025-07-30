@@ -12,7 +12,7 @@ public class Stock_History {
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
 
-    public Stock_History(int id, int symbolId, int periodNumber,
+    Stock_History(int id, int symbolId, int periodNumber,
                         LocalTime periodStartTime, LocalTime periodEndTime,
                         BigDecimal openingPrice, BigDecimal closingPrice,
                         BigDecimal minPrice, BigDecimal maxPrice) {
