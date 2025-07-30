@@ -14,13 +14,13 @@ public class StocksController {
     private StocksRepository stocksRepository;
 
     @PostMapping(path="/addStocks")
-    public @ResponseBody String addStocks (@RequestParam int symbol_id, @RequestParam String symbol, @RequestParam String company_name){
+    public @ResponseBody String addStocks (@RequestBody Stocks stocks){
 //        Stocks stocks = new Stocks();
 //        stocks.setSymbol_id(symbol_id);
 //        stocks.setSymbol(symbol);
 //        stocks.setCompany_name(company_name);
-//        stocksRepository.save(stocks);
-        System.out.println(company_name);
+        stocksRepository.save(stocks);
+//        System.out.println(company_name);
         return "Details got saved";
     }
 
