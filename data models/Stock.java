@@ -12,13 +12,10 @@ public class Stock {
 
     // Getters and Setters
     public int getSymbolId() { return symbolId; }
-    public void setSymbolId(int symbolId) { this.symbolId = symbolId; }
 
     public String getSymbol() { return symbol; }
-    public void setSymbol(String symbol) { this.symbol = symbol; }
 
     public String getCompanyName() { return companyName; }
-    public void setCompanyName(String companyName) { this.companyName = companyName; }
 
     @Override
     public String toString() {
