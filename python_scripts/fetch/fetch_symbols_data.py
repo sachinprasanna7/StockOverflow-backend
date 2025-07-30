@@ -33,6 +33,6 @@ def store_json_data(data, filename):
 
 json_stock_data = fetch_json_data("https://marketdata.neueda.com/API/StockFeed/GetSymbolList")
 
-store_json_data(json_stock_data, "database/symbols.json")
+store_json_data(json_stock_data, "data/symbols.json")
 
 
