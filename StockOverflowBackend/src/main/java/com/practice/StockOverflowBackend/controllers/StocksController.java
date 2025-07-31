@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(path="/stock")
 public class StocksController {
@@ -14,12 +16,12 @@ public class StocksController {
 
     @PostMapping(path="/addStocks")
     public @ResponseBody void addStocks (@RequestBody Stocks stocks) {
-
+            System.out.println(stocks);
             stockService.addStocks(stocks);
     }
 
     @GetMapping(path="/getStocks")
-    public @ResponseBody Iterable<Stocks> getAllCompany(){
+    public @ResponseBody List<Stocks> getAllCompany(){
         return stockService.getStocks();
 
     }

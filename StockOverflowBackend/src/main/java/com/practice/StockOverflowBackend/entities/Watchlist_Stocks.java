@@ -1,7 +1,19 @@
-package com.practice.StockOverflowBackend.Models;
+package com.practice.StockOverflowBackend.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import org.springframework.stereotype.Repository;
+
+@Entity
+@Table(name = "watchlist_stocks")
 public class Watchlist_Stocks {
+    public Watchlist_Stocks(){}
+    @Id
+    @Column(name="watchlist_id")
     private int watchlistId;
+    @Column(name="symbol_id")
     private int symbolId;
 
     Watchlist_Stocks(int watchlistId, int symbolId) {

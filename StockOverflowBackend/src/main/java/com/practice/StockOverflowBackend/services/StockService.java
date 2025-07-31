@@ -28,6 +28,7 @@ public class StockService {
                             stocks.getSymbol_id() + "already exists"
             );
         }
+        System.out.println(stocks);
         stocksRepository.save(stocks);
     }
 }

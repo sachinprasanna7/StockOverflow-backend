@@ -1,4 +1,4 @@
-package com.practice.StockOverflowBackend.Models;
+package com.practice.StockOverflowBackend.entities;
 
 import java.time.LocalTime;
 import java.util.*;

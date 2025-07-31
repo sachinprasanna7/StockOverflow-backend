@@ -1,36 +1,41 @@
 package com.practice.StockOverflowBackend.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "stock")
 public class Stocks {
+
     @Id
-    private int symbol_id;
+    private int symbol_id;  // primary key (not auto-generated here)
+
     private String symbol;
-    private String company_name;
+    @Column(name="company_name")
+    private String companyName;
 
-    public int getSymbol_id() {
-        return symbol_id;
+    // JPA requires a public no-args constructor
+    public Stocks() {
     }
 
-    public void setSymbol_id(int symbol_id) {
+    // Constructor for convenience
+    public Stocks(int symbol_id, String symbol, String companyName) {
         this.symbol_id = symbol_id;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public void setSymbol(String symbol) {
         this.symbol = symbol;
+        this.companyName = companyName;
     }
 
-    public String getCompany_name() {
-        return company_name;
-    }
+    public int getSymbol_id() { return symbol_id; }
 
-    public void setCompany_name(String company_name) {
-        this.company_name = company_name;
+    public String getSymbol() { return symbol; }
+
+    public String getCompanyName() { return companyName; }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "symbolId=" + symbol_id +
+                ", symbol='" + symbol + '\'' +
+                ", companyName='" + companyName + '\'' +
+                '}';
     }
 }

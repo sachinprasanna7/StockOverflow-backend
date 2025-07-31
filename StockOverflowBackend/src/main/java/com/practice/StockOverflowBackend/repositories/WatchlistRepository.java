@@ -1,6 +1,6 @@
-package com.practice.StockOverflowBackend.Interfaces;
+package com.practice.StockOverflowBackend.repositories;
 
-import com.practice.StockOverflowBackend.Models.Watchlist;
+import com.practice.StockOverflowBackend.entities.Watchlist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
