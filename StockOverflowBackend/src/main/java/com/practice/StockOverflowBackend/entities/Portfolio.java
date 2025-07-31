@@ -8,13 +8,11 @@ import jakarta.persistence.*;
 public class Portfolio {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;  // primary key
-
+    @Column(name="symbol_id")
     private int symbolId;
-
+    @Column(name="stock_quantity")
     private int stockQuantity;
-
+    @Column(name="money_invested")
     private BigDecimal moneyInvested;
 
     // JPA requires a default constructor
@@ -27,9 +25,7 @@ public class Portfolio {
         this.moneyInvested = moneyInvested;
     }
 
-    public Long getId() {
-        return id;
-    }
+
 
     public int getSymbolId() {
         return symbolId;
@@ -46,7 +42,7 @@ public class Portfolio {
     @Override
     public String toString() {
         return "Portfolio{" +
-                "id=" + id +
+
                 ", symbolId=" + symbolId +
                 ", stockQuantity=" + stockQuantity +
                 ", moneyInvested=" + moneyInvested +
