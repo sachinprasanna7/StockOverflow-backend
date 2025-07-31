@@ -1,17 +1,33 @@
 package com.practice.StockOverflowBackend.Models;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "watchlist")
 public class Watchlist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int watchlistId;
+
     private String name;
 
-    Watchlist(int watchlistId, String name) {
+    // Default constructor required by JPA
+    public Watchlist() {
+    }
+
+    public Watchlist(int watchlistId, String name) {
         this.watchlistId = watchlistId;
         this.name = name;
     }
 
-    public int getWatchlistId() { return watchlistId; }
+    public int getWatchlistId() {
+        return watchlistId;
+    }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     @Override
     public String toString() {
@@ -21,4 +37,3 @@ public class Watchlist {
                 '}';
     }
 }
-

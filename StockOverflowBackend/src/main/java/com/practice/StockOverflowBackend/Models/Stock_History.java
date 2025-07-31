@@ -1,23 +1,42 @@
 package com.practice.StockOverflowBackend.Models;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
+@Entity
+@Table(name = "stock_history")
 public class Stock_History {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private int symbolId;
+
     private int periodNumber;
+
     private LocalTime periodStartTime;
+
     private LocalTime periodEndTime;
+
     private BigDecimal openingPrice;
+
     private BigDecimal closingPrice;
+
     private BigDecimal minPrice;
+
     private BigDecimal maxPrice;
 
-    Stock_History(int id, int symbolId, int periodNumber,
-                  LocalTime periodStartTime, LocalTime periodEndTime,
-                  BigDecimal openingPrice, BigDecimal closingPrice,
-                  BigDecimal minPrice, BigDecimal maxPrice) {
+    // Default constructor required by JPA
+    public Stock_History() {
+    }
+
+    // Parameterized constructor
+    public Stock_History(int id, int symbolId, int periodNumber,
+                        LocalTime periodStartTime, LocalTime periodEndTime,
+                        BigDecimal openingPrice, BigDecimal closingPrice,
+                        BigDecimal minPrice, BigDecimal maxPrice) {
         this.id = id;
         this.symbolId = symbolId;
         this.periodNumber = periodNumber;
@@ -29,7 +48,6 @@ public class Stock_History {
         this.maxPrice = maxPrice;
     }
 
-    // Getters and Setters omitted for brevity
     public int getId() {
         return id;
     }
@@ -57,12 +75,15 @@ public class Stock_History {
     public BigDecimal getClosingPrice() {
         return closingPrice;
     }
+
     public BigDecimal getMinPrice() {
         return minPrice;
     }
+
     public BigDecimal getMaxPrice() {
         return maxPrice;
     }
+
     @Override
     public String toString() {
         return "StockHistory{" +
@@ -78,4 +99,3 @@ public class Stock_History {
                 '}';
     }
 }
-
