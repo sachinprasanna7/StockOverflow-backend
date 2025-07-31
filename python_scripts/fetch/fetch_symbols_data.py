@@ -1,17 +1,5 @@
-import mysql.connector
-import json
 import requests
-
-cnx = mysql.connector.connect(user='root', password='n3u3da!',
-                              host='127.0.0.1',
-                              database='stocks_overflow')
-
-# check if the connection is successful
-if cnx.is_connected():
-    print("Connected to the database successfully.")
-    
-
-sample_symbol = 'cop'
+import json
 
 def fetch_json_data(url):
     """
@@ -41,10 +29,12 @@ def store_json_data(data, filename):
     with open(filename, 'w') as f:
         json.dump(data, f, indent=4)
     print(f"Data stored in {filename} successfully.")
-    
-def get_history(symbol):
-    # sachin stop doing non sense things
-    return "sachin did nthg"
+
+
+json_stock_data = fetch_json_data("https://marketdata.neueda.com/API/StockFeed/GetSymbolList")
+
+store_json_data(json_stock_data, "data/symbols.json")
+
 
 
 
