@@ -31,7 +31,7 @@ public class Order_History {
 
     public enum OrderStatusEnum {
         PENDING,
-        COMPLETED,
+        EXECUTED,
         CANCELLED
     }
 

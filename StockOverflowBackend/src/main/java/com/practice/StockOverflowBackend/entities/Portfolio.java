@@ -10,9 +10,9 @@ public class Portfolio {
     @Id
     @Column(name="symbol_id")
     private int symbolId;
-    @Column(name="stock_quantity")
+    @Column(name="stock_quantity", nullable = false)
     private int stockQuantity;
-    @Column(name="money_invested")
+    @Column(name="money_invested", nullable = false)
     private BigDecimal moneyInvested;
 
     // JPA requires a default constructor
@@ -25,8 +25,7 @@ public class Portfolio {
         this.moneyInvested = moneyInvested;
     }
 
-
-
+    // Getters for JPA
     public int getSymbolId() {
         return symbolId;
     }
@@ -39,11 +38,23 @@ public class Portfolio {
         return moneyInvested;
     }
 
+    // Setters for JPA
+    public void setSymbolId(int symbolId) {
+        this.symbolId = symbolId;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
+    public void setMoneyInvested(BigDecimal moneyInvested) {
+        this.moneyInvested = moneyInvested;
+    }
+
     @Override
     public String toString() {
         return "Portfolio{" +
-
-                ", symbolId=" + symbolId +
+                "symbolId=" + symbolId +
                 ", stockQuantity=" + stockQuantity +
                 ", moneyInvested=" + moneyInvested +
                 '}';

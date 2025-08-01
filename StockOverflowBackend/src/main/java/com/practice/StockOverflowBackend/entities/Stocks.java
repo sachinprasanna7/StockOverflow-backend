@@ -3,7 +3,7 @@ package com.practice.StockOverflowBackend.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "stock")
+@Table(name = "stocks")
 public class Stocks {
 
     @Id
