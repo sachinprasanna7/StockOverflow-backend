@@ -53,3 +53,10 @@ create table order_history(
 	order_status enum('PENDING', 'EXECUTED', 'FAILED'),
 	foreign key (symbol_id) references stocks(symbol_id)
 );
+ALTER TABLE order_history 
+MODIFY order_id INT NOT NULL AUTO_INCREMENT;
+
+SHOW CREATE TABLE order_history;
+ALTER TABLE order_history DROP FOREIGN KEY order_history_ibfk_1;
+
+SELECT * FROM order_history;

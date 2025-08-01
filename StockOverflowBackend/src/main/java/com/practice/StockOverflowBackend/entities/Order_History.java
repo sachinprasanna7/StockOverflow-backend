@@ -14,7 +14,12 @@ public class Order_History {
 
     private LocalDateTime timeOrdered;
     private LocalDateTime timeCompleted;
-    private int symbolId;
+
+    // Foreign key relationship: Many orders belong to one stock
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symbol_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Stocks stock;
 
     public enum OrderTypeEnum {
         LIMIT,
@@ -38,23 +43,23 @@ public class Order_History {
     @Enumerated(EnumType.STRING)
     private OrderStatusEnum orderStatus;
 
-    // Default constructor required by JPA
-    public Order_History() {
-    }
+    // JPA requires a default constructor
+    public Order_History() {}
 
-    public Order_History(int orderId,
-                        LocalDateTime timeOrdered,
-                        LocalDateTime timeCompleted,
-                        int symbolId,
-                        OrderTypeEnum orderType,
-                        int stockQuantity,
-                        BigDecimal transactionAmount,
-                        boolean isBuy,
-                        OrderStatusEnum orderStatus) {
-        this.orderId = orderId;
+    // Constructor for convenience
+    public Order_History(
+            LocalDateTime timeOrdered,
+            LocalDateTime timeCompleted,
+            Stocks stock,
+            OrderTypeEnum orderType,
+            int stockQuantity,
+            BigDecimal transactionAmount,
+            boolean isBuy,
+            OrderStatusEnum orderStatus) {
+
         this.timeOrdered = timeOrdered;
         this.timeCompleted = timeCompleted;
-        this.symbolId = symbolId;
+        this.stock = stock;
         this.orderType = orderType;
         this.stockQuantity = stockQuantity;
         this.transactionAmount = transactionAmount;
@@ -62,7 +67,7 @@ public class Order_History {
         this.orderStatus = orderStatus;
     }
 
-    // Getters and setters
+    // Getters and Setters
     public int getOrderId() {
         return orderId;
     }
@@ -71,41 +76,73 @@ public class Order_History {
         return timeOrdered;
     }
 
+    public void setTimeOrdered(LocalDateTime timeOrdered) {
+        this.timeOrdered = timeOrdered;
+    }
+
     public LocalDateTime getTimeCompleted() {
         return timeCompleted;
     }
 
-    public int getSymbolId() {
-        return symbolId;
+    public void setTimeCompleted(LocalDateTime timeCompleted) {
+        this.timeCompleted = timeCompleted;
+    }
+
+    public Stocks getStock() {
+        return stock;
+    }
+
+    public void setStock(Stocks stock) {
+        this.stock = stock;
     }
 
     public OrderTypeEnum getOrderType() {
         return orderType;
     }
 
+    public void setOrderType(OrderTypeEnum orderType) {
+        this.orderType = orderType;
+    }
+
     public int getStockQuantity() {
         return stockQuantity;
+    }
+
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
     }
 
     public BigDecimal getTransactionAmount() {
         return transactionAmount;
     }
 
+    public void setTransactionAmount(BigDecimal transactionAmount) {
+        this.transactionAmount = transactionAmount;
+    }
+
     public boolean isBuy() {
         return isBuy;
+    }
+
+    public void setBuy(boolean buy) {
+        isBuy = buy;
     }
 
     public OrderStatusEnum getOrderStatus() {
         return orderStatus;
     }
 
+    public void setOrderStatus(OrderStatusEnum orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
     @Override
     public String toString() {
-        return "OrderHistory{" +
+        return "Order_History{" +
                 "orderId=" + orderId +
                 ", timeOrdered=" + timeOrdered +
                 ", timeCompleted=" + timeCompleted +
-                ", symbolId=" + symbolId +
+                ", stock=" + (stock != null ? stock.getSymbol_id() : null) +
                 ", orderType=" + orderType +
                 ", stockQuantity=" + stockQuantity +
                 ", transactionAmount=" + transactionAmount +

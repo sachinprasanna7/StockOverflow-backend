@@ -3,10 +3,12 @@ package com.practice.StockOverflowBackend.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "stock")
+@Table(name = "stocks")
 public class Stocks {
 
     @Id
+    @Column(name = "symbol_id")
+
     private int symbol_id;  // primary key (not auto-generated here)
 
     private String symbol;
@@ -25,7 +27,9 @@ public class Stocks {
     }
 
     public int getSymbol_id() { return symbol_id; }
-
+    public void setSymbolId(int symbolId) {
+        this.symbol_id = symbolId;
+    }
     public String getSymbol() { return symbol; }
 
     public String getCompanyName() { return companyName; }
