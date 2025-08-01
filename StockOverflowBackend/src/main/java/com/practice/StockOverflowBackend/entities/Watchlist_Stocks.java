@@ -1,34 +1,28 @@
 package com.practice.StockOverflowBackend.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.practice.StockOverflowBackend.compositeKeys.WatchlistStockCompositeKey;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "watchlist_stocks")
 public class Watchlist_Stocks {
     public Watchlist_Stocks(){}
-    @Id
-    @Column(name="watchlist_id")
-    private int watchlistId;
-    @Column(name="symbol_id")
-    private int symbolId;
+    @EmbeddedId
+    private WatchlistStockCompositeKey compositeKey;
 
-    Watchlist_Stocks(int watchlistId, int symbolId) {
-        this.watchlistId = watchlistId;
-        this.symbolId = symbolId;
+        public void setCompositeKey( WatchlistStockCompositeKey compositeKey) {
+        this.compositeKey= compositeKey;
     }
 
-    public int getWatchlistId() { return watchlistId; }
+    public int getWatchlistId() { return compositeKey.getWatchlistId(); }
 
-    public int getSymbolId() { return symbolId; }
+    public int getSymbolId() { return compositeKey.getSymbolId(); }
 
     @Override
     public String toString() {
         return "WatchlistStock{" +
-                "watchlistId=" + watchlistId +
-                ", symbolId=" + symbolId +
+                "watchlistId=" + compositeKey.getWatchlistId() +
+                ", symbolId=" + compositeKey.getSymbolId() +
                 '}';
     }
 }

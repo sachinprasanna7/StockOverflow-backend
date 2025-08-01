@@ -50,6 +50,11 @@ public class OrderHistoryController {
 
     @PostMapping
     public ResponseEntity<Order_History> createOrder(@RequestBody Order_History order) {
+        if (order.getStock() != null) {
+            System.out.println("Incoming symbolId: " + order.getStock().getSymbol_id());
+        } else {
+            System.out.println("Incoming stock is NULL");
+        }
         Order_History savedOrder = service.saveOrder(order);
 
         HttpHeaders headers = new HttpHeaders();
