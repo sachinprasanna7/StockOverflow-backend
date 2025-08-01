@@ -10,22 +10,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(path="/watchlist")
 public class WatchlistController {
     @Autowired
     public WatchlistService watchlistService;
 
-    @PostMapping(path="/addWatchlistStocks")
+    @PostMapping(path="/addWatchlist")
     public @ResponseBody void addWatchlists (@RequestBody Watchlist watchlist) {
         System.out.println(watchlist);
         watchlistService.addWatchlist(watchlist);
     }
 
-    @GetMapping(path="/getWatchlistStocks")
+    @GetMapping(path="/getWatchlists")
     public @ResponseBody List<Watchlist> getWatchlists(){
         return watchlistService.getWatchlists();
 
     }
+
+
 }
 

@@ -18,10 +18,13 @@ public class WatchlistService {
     @Autowired
     private WatchlistRepository watchlistRepository;
 
+    // Get all watchlists
     public List<Watchlist> getWatchlists() {
         return  watchlistRepository.findAll();
     }
 
+
+    //Add a new watchlist
     public void addWatchlist(Watchlist watchlist) {
         if ( watchlistRepository.existsById(watchlist.getWatchlistId())){
             throw new ResponseStatusException(
@@ -33,5 +36,7 @@ public class WatchlistService {
         System.out.println(watchlist);
         watchlistRepository.save(watchlist);
     }
+
+
 }
 
