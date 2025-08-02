@@ -2,8 +2,12 @@ package com.practice.StockOverflowBackend.services;
 
 
 import com.practice.StockOverflowBackend.compositeKeys.WatchlistStockCompositeKey;
+import com.practice.StockOverflowBackend.entities.Stocks;
+import com.practice.StockOverflowBackend.entities.Watchlist;
 import com.practice.StockOverflowBackend.entities.Watchlist_Stocks;
 
+import com.practice.StockOverflowBackend.repositories.StocksRepository;
+import com.practice.StockOverflowBackend.repositories.WatchlistRepository;
 import com.practice.StockOverflowBackend.repositories.WatchlistStocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +22,10 @@ public class WatchlistStocksService {
 
     @Autowired
     private WatchlistStocksRepository watchlistStocksRepository;
-
+    @Autowired
+    private StocksRepository stocksRepository;
+    @Autowired
+    private WatchlistRepository watchlistRepository;
     //get all watchlist stocks in the same watchlist with watchlistId
     public List<Watchlist_Stocks> getWatchlistStocksById(int watchlistId) {
         List<Watchlist_Stocks> watchlistStocks = watchlistStocksRepository.findByCompositeKeyWatchlistId(watchlistId);
@@ -29,8 +36,20 @@ public class WatchlistStocksService {
     }
 
     public void addWatchlistStocks(WatchlistStockCompositeKey watchlistStocksCompositeKey) {
+        // Check if stock exists
+        Stocks stock = stocksRepository.findById(watchlistStocksCompositeKey.getSymbolId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stock does not exist"));
+
+        // Check if watchlist exists
+        Watchlist watchlist = watchlistRepository.findById(watchlistStocksCompositeKey.getWatchlistId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Watchlist does not exist"));
+
+        // Create and populate the entity
         Watchlist_Stocks watchlistStocks = new Watchlist_Stocks();
         watchlistStocks.setCompositeKey(watchlistStocksCompositeKey);
+        watchlistStocks.setStock(stock);
+        watchlistStocks.setWatchlist(watchlist);
+
         watchlistStocksRepository.save(watchlistStocks);
     }
     @Transactional

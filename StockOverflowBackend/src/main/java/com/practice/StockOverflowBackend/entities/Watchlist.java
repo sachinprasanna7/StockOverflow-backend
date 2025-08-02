@@ -3,12 +3,14 @@ package com.practice.StockOverflowBackend.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "watchlist")
+@Table(name = "watchlists")
 public class Watchlist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int watchlistId;
+
+
 
     private String name;
 
