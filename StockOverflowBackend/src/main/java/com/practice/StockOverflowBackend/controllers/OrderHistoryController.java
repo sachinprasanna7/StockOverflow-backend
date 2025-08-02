@@ -66,16 +66,5 @@ public class OrderHistoryController {
                 .body(savedOrder);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable int id) {
-        service.deleteOrder(id);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Deleted-Id", String.valueOf(id));
-
-        return ResponseEntity
-                .noContent()
-                .headers(headers)
-                .build();
-    }
 }

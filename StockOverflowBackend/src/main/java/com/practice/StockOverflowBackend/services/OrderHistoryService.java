@@ -2,12 +2,13 @@ package com.practice.StockOverflowBackend.services;
 
 import com.practice.StockOverflowBackend.entities.Order_History;
 import com.practice.StockOverflowBackend.entities.Stocks;
+import com.practice.StockOverflowBackend.exceptions.BadRequestException;
+import com.practice.StockOverflowBackend.exceptions.ResourceNotFoundException;
 import com.practice.StockOverflowBackend.repositories.OrderHistoryRepository;
 import com.practice.StockOverflowBackend.repositories.StocksRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderHistoryService {
@@ -21,35 +22,39 @@ public class OrderHistoryService {
         this.stockRepository = stockRepository;
     }
 
-    // Get all orders
     public List<Order_History> getAllOrders() {
         return orderHistoryRepository.findAll();
     }
 
-    // Get order by ID
     public Order_History getOrderById(int id) {
-        Optional<Order_History> order = orderHistoryRepository.findById(id);
-        return order.orElse(null);
+        return orderHistoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
     }
 
-    // Create or update an order
     public Order_History saveOrder(Order_History orderHistory) {
-        // Extract symbolId from the stock object inside the incoming order
+        if (orderHistory.getStock() == null) {
+            throw new BadRequestException("Stock must be provided in the order.");
+        }
+
         int symbolId = orderHistory.getStock().getSymbol_id();
 
-        // Fetch stock entity from DB (foreign key)
         Stocks stock = stockRepository.findById(symbolId)
-                .orElseThrow(() -> new RuntimeException("Stock with id " + symbolId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Stock with id " + symbolId + " not found"));
 
-        // Attach managed stock entity to the order
         orderHistory.setStock(stock);
 
-        // Save order
+        // ✅ Validate timeCompleted based on order status
+        if (orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.EXECUTED) {
+            if (orderHistory.getTimeCompleted() == null) {
+                throw new BadRequestException("timeCompleted must be provided when orderStatus is EXECUTED.");
+            }
+        } else {
+            // Any status other than EXECUTED → timeCompleted must be null
+            orderHistory.setTimeCompleted(null);
+        }
+
         return orderHistoryRepository.save(orderHistory);
     }
 
-    // Delete an order by ID
-    public void deleteOrder(int id) {
-        orderHistoryRepository.deleteById(id);
-    }
+
 }
