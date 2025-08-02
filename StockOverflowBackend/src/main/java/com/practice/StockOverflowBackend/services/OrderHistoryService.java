@@ -8,6 +8,8 @@ import com.practice.StockOverflowBackend.repositories.OrderHistoryRepository;
 import com.practice.StockOverflowBackend.repositories.StocksRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +34,7 @@ public class OrderHistoryService {
     }
 
     public Order_History saveOrder(Order_History orderHistory) {
+        // Stock must be provided
         if (orderHistory.getStock() == null) {
             throw new BadRequestException("Stock must be provided in the order.");
         }
@@ -43,18 +46,51 @@ public class OrderHistoryService {
 
         orderHistory.setStock(stock);
 
-        // ✅ Validate timeCompleted based on order status
+        // Validate orderType - must not be null
+        if (orderHistory.getOrderType() == null) {
+            throw new BadRequestException("Order type must be provided.");
+        }
+
+        // Validate stockQuantity - must be positive
+        if (orderHistory.getStockQuantity() <= 0) {
+            throw new BadRequestException("Stock quantity must be positive.");
+        }
+
+        // Validate transactionAmount - must be positive
+        if (orderHistory.getTransactionAmount() == null || orderHistory.getTransactionAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Transaction amount must be positive.");
+        }
+
+        // Validate isBuy - (assuming it cannot be null, primitive boolean - no check needed)
+
+        // Validate timeOrdered - must not be null and cannot be in the future (optional)
+        if (orderHistory.getTimeOrdered() == null) {
+            throw new BadRequestException("timeOrdered must be provided.");
+        }
+        if (orderHistory.getTimeOrdered().isAfter(LocalDateTime.now())) {
+            throw new BadRequestException("timeOrdered cannot be in the future.");
+        }
+
+        // Validate timeCompleted based on orderStatus
+        if (orderHistory.getOrderStatus() == null) {
+            throw new BadRequestException("Order status must be provided.");
+        }
+
         if (orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.EXECUTED) {
+            // timeCompleted must be provided
             if (orderHistory.getTimeCompleted() == null) {
                 throw new BadRequestException("timeCompleted must be provided when orderStatus is EXECUTED.");
             }
+            // timeCompleted should NOT be before timeOrdered
+            if (orderHistory.getTimeCompleted().isBefore(orderHistory.getTimeOrdered())) {
+                throw new BadRequestException("timeCompleted cannot be before timeOrdered.");
+            }
         } else {
-            // Any status other than EXECUTED → timeCompleted must be null
+            // Any other status → timeCompleted must be null
             orderHistory.setTimeCompleted(null);
         }
 
         return orderHistoryRepository.save(orderHistory);
     }
-
 
 }

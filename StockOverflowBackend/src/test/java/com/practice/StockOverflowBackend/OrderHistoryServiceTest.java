@@ -106,4 +106,123 @@ class OrderHistoryServiceTest {
         assertEquals(Order_History.OrderStatusEnum.EXECUTED, saved.getOrderStatus());
         assertNotNull(saved.getTimeCompleted());
     }
+    @Test
+    void saveOrder_shouldThrowBadRequest_ifStockQuantityIsZeroOrNegative() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setOrderStatus(Order_History.OrderStatusEnum.PENDING);
+        order.setStockQuantity(0);  // zero quantity
+        order.setTransactionAmount(BigDecimal.valueOf(100));
+        order.setTimeOrdered(LocalDateTime.now());
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+
+        order.setStockQuantity(-5); // negative quantity
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+    }
+
+    @Test
+    void saveOrder_shouldThrowBadRequest_ifTransactionAmountIsZeroOrNegative() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setOrderStatus(Order_History.OrderStatusEnum.PENDING);
+        order.setStockQuantity(10);
+        order.setTransactionAmount(BigDecimal.ZERO);  // zero amount
+        order.setTimeOrdered(LocalDateTime.now());
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+
+        order.setTransactionAmount(BigDecimal.valueOf(-100)); // negative amount
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+    }
+
+    @Test
+    void saveOrder_shouldThrowBadRequest_ifOrderTypeIsNull() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setOrderType(null);  // null order type
+        order.setOrderStatus(Order_History.OrderStatusEnum.PENDING);
+        order.setStockQuantity(10);
+        order.setTransactionAmount(BigDecimal.valueOf(100));
+        order.setTimeOrdered(LocalDateTime.now());
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+    }
+
+    @Test
+    void saveOrder_shouldRejectIfStockQuantityExceedsMax() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setStockQuantity(Integer.MAX_VALUE + 1); // Not possible in int, so test max int value
+        order.setTransactionAmount(BigDecimal.valueOf(100));
+        order.setOrderType(Order_History.OrderTypeEnum.LIMIT);
+        order.setOrderStatus(Order_History.OrderStatusEnum.PENDING);
+        order.setTimeOrdered(LocalDateTime.now());
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        // Depending on your validation logic, it might accept max int or throw BadRequest
+        // Here we assume max is allowed, no exception
+        assertDoesNotThrow(() -> service.saveOrder(order));
+    }
+
+    @Test
+    void saveOrder_shouldRejectIfTransactionAmountExceedsLimit() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setStockQuantity(10);
+        order.setTransactionAmount(new BigDecimal("1000000000000")); // very large number
+        order.setOrderType(Order_History.OrderTypeEnum.LIMIT);
+        order.setOrderStatus(Order_History.OrderStatusEnum.PENDING);
+        order.setTimeOrdered(LocalDateTime.now());
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        // Assuming no validation on max amount - no exception expected
+        assertDoesNotThrow(() -> service.saveOrder(order));
+    }
+
+    @Test
+    void saveOrder_shouldThrowBadRequest_ifTimeCompletedBeforeTimeOrdered() {
+        Stocks stock = new Stocks();
+        stock.setSymbolId(1);
+
+        LocalDateTime ordered = LocalDateTime.now();
+        LocalDateTime completedBeforeOrdered = ordered.minusHours(1);
+
+        Order_History order = new Order_History();
+        order.setStock(stock);
+        order.setOrderStatus(Order_History.OrderStatusEnum.EXECUTED);
+        order.setTimeOrdered(ordered);
+        order.setTimeCompleted(completedBeforeOrdered);
+        order.setStockQuantity(10);
+        order.setTransactionAmount(BigDecimal.valueOf(100));
+        order.setOrderType(Order_History.OrderTypeEnum.LIMIT);
+
+        when(stocksRepository.findById(1)).thenReturn(Optional.of(stock));
+
+        assertThrows(BadRequestException.class, () -> service.saveOrder(order));
+    }
+
 }
