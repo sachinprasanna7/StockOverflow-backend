@@ -30,7 +30,12 @@ public class Watchlist {
     public String getWatchlistName() {
         return name;
     }
-
+    public void setWatchlistId(int watchlistId) {
+        this.watchlistId = watchlistId;
+    }
+    public void setWatchlistName(String name) {
+        this.name = name;
+    }
     @Override
     public String toString() {
         return "Watchlist{" +

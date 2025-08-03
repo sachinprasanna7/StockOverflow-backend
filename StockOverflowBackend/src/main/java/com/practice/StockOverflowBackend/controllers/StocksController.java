@@ -1,4 +1,4 @@
-package com.practice.StockOverflowBackend.Controllers;
+package com.practice.StockOverflowBackend.controllers;
 
 import com.practice.StockOverflowBackend.entities.Stocks;
 import com.practice.StockOverflowBackend.services.StockService;
