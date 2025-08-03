@@ -27,7 +27,5 @@ public class WatchlistController {
         return watchlistService.getWatchlists();
 
     }
-
-
 }
 

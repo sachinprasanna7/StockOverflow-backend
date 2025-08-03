@@ -50,6 +50,14 @@ public class OrderHistoryService {
         if (orderHistory.getOrderType() == null) {
             throw new BadRequestException("Order type must be provided.");
         }
+        boolean validOrderType =
+                orderHistory.getOrderType() == Order_History.OrderTypeEnum.LIMIT ||
+                        orderHistory.getOrderType() == Order_History.OrderTypeEnum.MARKET ||
+                        orderHistory.getOrderType() == Order_History.OrderTypeEnum.STOP;
+
+        if (!validOrderType) {
+            throw new BadRequestException("Invalid order type. Allowed values: LIMIT, MARKET, STOP.");
+        }
 
         // Validate stockQuantity - must be positive
         if (orderHistory.getStockQuantity() <= 0) {
@@ -61,7 +69,6 @@ public class OrderHistoryService {
             throw new BadRequestException("Transaction amount must be positive.");
         }
 
-        // Validate isBuy - (assuming it cannot be null, primitive boolean - no check needed)
 
         // Validate timeOrdered - must not be null and cannot be in the future (optional)
         if (orderHistory.getTimeOrdered() == null) {
@@ -89,8 +96,20 @@ public class OrderHistoryService {
             // Any other status → timeCompleted must be null
             orderHistory.setTimeCompleted(null);
         }
+        boolean isValidStatus =
+                orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.PENDING ||
+                        orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.EXECUTED ||
+                        orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.CANCELLED;
+        if (!isValidStatus) {
+            throw new BadRequestException("Invalid order status. Allowed values: PENDING, EXECUTED, CANCELLED.");
+        }
 
         return orderHistoryRepository.save(orderHistory);
     }
+
+    public List<Order_History> searchOrdersByStockNameOrSymbol(String keyword) {
+        return orderHistoryRepository.searchByStockNameOrSymbol(keyword);
+    }
+
 
 }

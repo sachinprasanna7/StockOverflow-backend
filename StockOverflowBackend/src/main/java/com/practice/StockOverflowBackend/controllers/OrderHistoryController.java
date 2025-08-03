@@ -65,6 +65,10 @@ public class OrderHistoryController {
                 .headers(headers)
                 .body(savedOrder);
     }
+    @GetMapping("/search")
+    public List<Order_History> searchOrdersByStockName(@RequestParam String name) {
+        return service.searchOrdersByStockNameOrSymbol(name);
+    }
 
 
 }
