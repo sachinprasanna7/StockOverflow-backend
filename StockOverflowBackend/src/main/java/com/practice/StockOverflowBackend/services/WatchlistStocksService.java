@@ -2,6 +2,9 @@ package com.practice.StockOverflowBackend.services;
 
 
 import com.practice.StockOverflowBackend.compositeKeys.WatchlistStockCompositeKey;
+import com.practice.StockOverflowBackend.dtos.StockDTO;
+
+import com.practice.StockOverflowBackend.dtos.WatchlistWithStocksDTO;
 import com.practice.StockOverflowBackend.entities.Stocks;
 import com.practice.StockOverflowBackend.entities.Watchlist;
 import com.practice.StockOverflowBackend.entities.Watchlist_Stocks;
@@ -27,12 +30,26 @@ public class WatchlistStocksService {
     @Autowired
     private WatchlistRepository watchlistRepository;
     //get all watchlist stocks in the same watchlist with watchlistId
-    public List<Watchlist_Stocks> getWatchlistStocksById(int watchlistId) {
+    public WatchlistWithStocksDTO getWatchlistStocksById(int watchlistId) {
+        Watchlist watchlist = watchlistRepository.findById(watchlistId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Watchlist not found"));
+
         List<Watchlist_Stocks> watchlistStocks = watchlistStocksRepository.findByCompositeKeyWatchlistId(watchlistId);
-        if (watchlistStocks.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No stocks found for the given watchlist ID");
-        }
-        return watchlistStocks;
+
+        List<StockDTO> stocks = watchlistStocks.stream()
+                .map(ws -> new StockDTO(
+                        ws.getStock().getSymbol_id(),
+                        ws.getStock().getSymbol(),
+                        ws.getStock().getCompanyName() // assuming this is company name
+                ))
+                .toList();
+
+        return new WatchlistWithStocksDTO(
+                watchlist.getWatchlistId(),
+                watchlist.getWatchlistName(),
+                stocks
+        );
+
     }
 
     public void addWatchlistStocks(WatchlistStockCompositeKey watchlistStocksCompositeKey) {

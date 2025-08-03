@@ -1,6 +1,8 @@
-package com.practice.StockOverflowBackend.Controllers;
+package com.practice.StockOverflowBackend.controllers;
 
 import com.practice.StockOverflowBackend.compositeKeys.WatchlistStockCompositeKey;
+
+import com.practice.StockOverflowBackend.dtos.WatchlistWithStocksDTO;
 import com.practice.StockOverflowBackend.entities.Watchlist_Stocks;
 import com.practice.StockOverflowBackend.services.WatchlistStocksService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class WatchlistStocksController {
     }
 
     @GetMapping(path="/getWatchlistStocks/{id}")
-    public @ResponseBody List<Watchlist_Stocks> getWatchlistStocksById(@PathVariable int id) {
+    public @ResponseBody WatchlistWithStocksDTO getWatchlistStocksById(@PathVariable int id) {
         return watchlistStocksService.getWatchlistStocksById(id);
     }
 

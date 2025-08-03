@@ -11,7 +11,11 @@ public class WatchlistStockCompositeKey implements Serializable {
     private int watchlistId;
     @Column(name="symbol_id")
     private int symbolId;
-
+    public WatchlistStockCompositeKey(){}
+    public WatchlistStockCompositeKey(int watchlistId, int symbolId) {
+        this.watchlistId = watchlistId;
+        this.symbolId = symbolId;
+    }
     public int getWatchlistId(){
         return  watchlistId;
     }

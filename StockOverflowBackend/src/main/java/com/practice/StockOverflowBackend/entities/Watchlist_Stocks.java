@@ -7,6 +7,13 @@ import jakarta.persistence.*;
 @Table(name = "watchlist_stocks")
 public class Watchlist_Stocks {
     public Watchlist_Stocks(){}
+
+    public Watchlist_Stocks(int watchlistId, int symbolId,Stocks stock, Watchlist watchlist) {
+        this.stock = stock;
+        this.watchlist = watchlist;
+        this.compositeKey = new WatchlistStockCompositeKey(watchlistId, symbolId);
+
+    }
     @EmbeddedId
     private WatchlistStockCompositeKey compositeKey;
 
@@ -35,6 +42,13 @@ public class Watchlist_Stocks {
     public void setWatchlist(Watchlist watchlist) {
         this.watchlist = watchlist;
     }
+    public Watchlist getWatchlist() {
+        return watchlist;
+    }
+    public Stocks getStock() {
+        return stock;
+    }
+
     @Override
     public String toString() {
         return "WatchlistStock{" +

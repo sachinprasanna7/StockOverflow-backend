@@ -27,7 +27,7 @@ public class Watchlist {
         return watchlistId;
     }
 
-    public String getName() {
+    public String getWatchlistName() {
         return name;
     }
 
