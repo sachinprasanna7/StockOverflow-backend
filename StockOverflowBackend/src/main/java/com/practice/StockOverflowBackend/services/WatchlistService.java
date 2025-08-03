@@ -17,23 +17,25 @@ public class WatchlistService {
     private WatchlistRepository watchlistRepository;
 
     // Get all watchlists
-    public ResponseEntity<List<Watchlist>> getWatchlists() {
+    public List<Watchlist> getWatchlists() {
         List<Watchlist> watchlists = watchlistRepository.findAll();
-        return ResponseEntity.ok(watchlists);
+        return watchlists;
     }
 
     // Add a new watchlist
-    public ResponseEntity<Watchlist> addWatchlist(String name) {
+    public Watchlist addWatchlist(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Watchlist name is required");
         }
-
+        if (watchlistRepository.existsByName(name)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Watchlist name already exists: " + name);
+        }
         try {
             Watchlist watchlist = new Watchlist();
             watchlist.setWatchlistName(name);
             // ID will be auto-generated
-            Watchlist saved = watchlistRepository.save(watchlist);
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+            return watchlistRepository.save(watchlist);
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving watchlist");
         }

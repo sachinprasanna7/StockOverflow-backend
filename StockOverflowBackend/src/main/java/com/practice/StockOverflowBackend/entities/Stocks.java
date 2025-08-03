@@ -42,4 +42,12 @@ public class Stocks {
                 ", companyName='" + companyName + '\'' +
                 '}';
     }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 }

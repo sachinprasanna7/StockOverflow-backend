@@ -48,8 +48,10 @@ public class WatchlistStocksService {
                     watchlist.getWatchlistName(),
                     stocks
             );
+        } catch (ResponseStatusException e) {
+            throw e;  // Re-throw known exceptions as is, so Spring can handle status properly
         } catch (Exception e) {
-            // Log exception if you have a logger, or rethrow with internal server error
+            // Unexpected exceptions get wrapped into 500
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get stocks for watchlist ID: " + watchlistId);
         }
     }
