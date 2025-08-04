@@ -2,12 +2,15 @@ package com.practice.StockOverflowBackend.services;
 
 import com.practice.StockOverflowBackend.entities.Order_History;
 import com.practice.StockOverflowBackend.entities.Stocks;
+import com.practice.StockOverflowBackend.exceptions.BadRequestException;
+import com.practice.StockOverflowBackend.exceptions.ResourceNotFoundException;
 import com.practice.StockOverflowBackend.repositories.OrderHistoryRepository;
 import com.practice.StockOverflowBackend.repositories.StocksRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderHistoryService {
@@ -21,35 +24,92 @@ public class OrderHistoryService {
         this.stockRepository = stockRepository;
     }
 
-    // Get all orders
     public List<Order_History> getAllOrders() {
         return orderHistoryRepository.findAll();
     }
 
-    // Get order by ID
     public Order_History getOrderById(int id) {
-        Optional<Order_History> order = orderHistoryRepository.findById(id);
-        return order.orElse(null);
+        return orderHistoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + id));
     }
 
-    // Create or update an order
     public Order_History saveOrder(Order_History orderHistory) {
-        // Extract symbolId from the stock object inside the incoming order
+        // Stock must be provided
+        if (orderHistory.getStock() == null) {
+            throw new BadRequestException("Stock must be provided in the order.");
+        }
+
         int symbolId = orderHistory.getStock().getSymbol_id();
 
-        // Fetch stock entity from DB (foreign key)
         Stocks stock = stockRepository.findById(symbolId)
-                .orElseThrow(() -> new RuntimeException("Stock with id " + symbolId + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Stock with id " + symbolId + " not found"));
 
-        // Attach managed stock entity to the order
         orderHistory.setStock(stock);
 
-        // Save order
+        // Validate orderType - must not be null
+        if (orderHistory.getOrderType() == null) {
+            throw new BadRequestException("Order type must be provided.");
+        }
+        boolean validOrderType =
+                orderHistory.getOrderType() == Order_History.OrderTypeEnum.LIMIT ||
+                        orderHistory.getOrderType() == Order_History.OrderTypeEnum.MARKET ||
+                        orderHistory.getOrderType() == Order_History.OrderTypeEnum.STOP;
+
+        if (!validOrderType) {
+            throw new BadRequestException("Invalid order type. Allowed values: LIMIT, MARKET, STOP.");
+        }
+
+        // Validate stockQuantity - must be positive
+        if (orderHistory.getStockQuantity() <= 0) {
+            throw new BadRequestException("Stock quantity must be positive.");
+        }
+
+        // Validate transactionAmount - must be positive
+        if (orderHistory.getTransactionAmount() == null || orderHistory.getTransactionAmount().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BadRequestException("Transaction amount must be positive.");
+        }
+
+
+        // Validate timeOrdered - must not be null and cannot be in the future (optional)
+        if (orderHistory.getTimeOrdered() == null) {
+            throw new BadRequestException("timeOrdered must be provided.");
+        }
+        if (orderHistory.getTimeOrdered().isAfter(LocalDateTime.now())) {
+            throw new BadRequestException("timeOrdered cannot be in the future.");
+        }
+
+        // Validate timeCompleted based on orderStatus
+        if (orderHistory.getOrderStatus() == null) {
+            throw new BadRequestException("Order status must be provided.");
+        }
+
+        if (orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.EXECUTED) {
+            // timeCompleted must be provided
+            if (orderHistory.getTimeCompleted() == null) {
+                throw new BadRequestException("timeCompleted must be provided when orderStatus is EXECUTED.");
+            }
+            // timeCompleted should NOT be before timeOrdered
+            if (orderHistory.getTimeCompleted().isBefore(orderHistory.getTimeOrdered())) {
+                throw new BadRequestException("timeCompleted cannot be before timeOrdered.");
+            }
+        } else {
+            // Any other status → timeCompleted must be null
+            orderHistory.setTimeCompleted(null);
+        }
+        boolean isValidStatus =
+                orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.PENDING ||
+                        orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.EXECUTED ||
+                        orderHistory.getOrderStatus() == Order_History.OrderStatusEnum.CANCELLED;
+        if (!isValidStatus) {
+            throw new BadRequestException("Invalid order status. Allowed values: PENDING, EXECUTED, CANCELLED.");
+        }
+
         return orderHistoryRepository.save(orderHistory);
     }
 
-    // Delete an order by ID
-    public void deleteOrder(int id) {
-        orderHistoryRepository.deleteById(id);
+    public List<Order_History> searchOrdersByStockNameOrSymbol(String keyword) {
+        return orderHistoryRepository.searchByStockNameOrSymbol(keyword);
     }
+
+
 }

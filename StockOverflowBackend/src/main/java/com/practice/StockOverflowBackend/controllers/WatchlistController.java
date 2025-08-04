@@ -1,33 +1,40 @@
 package com.practice.StockOverflowBackend.controllers;
 
-
+import com.practice.StockOverflowBackend.dtos.WatchlistRequest;
 import com.practice.StockOverflowBackend.entities.Watchlist;
-
 import com.practice.StockOverflowBackend.services.WatchlistService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/watchlist")
+@RequestMapping(path = "/watchlist")
 public class WatchlistController {
+
     @Autowired
-    public WatchlistService watchlistService;
+    private WatchlistService watchlistService;
 
-    @PostMapping(path="/addWatchlist")
-    public @ResponseBody void addWatchlists (@RequestBody Watchlist watchlist) {
-        System.out.println(watchlist);
-        watchlistService.addWatchlist(watchlist);
+    // Add a watchlist and return the created entity
+    @PostMapping(path = "/addWatchlist")
+    public ResponseEntity<Watchlist> addWatchlist(@RequestBody WatchlistRequest request) {
+        Watchlist savedWatchlist = watchlistService.addWatchlist(request.getName());
+        return ResponseEntity.status(201).body(savedWatchlist); // HTTP 201 Created
     }
 
-    @GetMapping(path="/getWatchlists")
-    public @ResponseBody List<Watchlist> getWatchlists(){
-        return watchlistService.getWatchlists();
-
+    // Get all watchlists
+    @GetMapping(path = "/getWatchlists")
+    public ResponseEntity<List<Watchlist>> getWatchlists() {
+        List<Watchlist> watchlists = watchlistService.getWatchlists();
+        return ResponseEntity.ok(watchlists);
     }
 
-
+    // Delete a watchlist by ID
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<Void> deleteWatchlistById(@PathVariable int id) {
+        watchlistService.deleteWatchlistById(id);
+        return ResponseEntity.noContent().build(); // HTTP 204 No Content
+    }
 }
-

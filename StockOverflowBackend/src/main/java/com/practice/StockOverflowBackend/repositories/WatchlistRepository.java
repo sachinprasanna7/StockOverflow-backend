@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WatchlistRepository extends JpaRepository<Watchlist, Integer> {
-    // You can add custom queries if needed
+    boolean existsByName(String watchlistName);
+// You can add custom queries if needed
 }

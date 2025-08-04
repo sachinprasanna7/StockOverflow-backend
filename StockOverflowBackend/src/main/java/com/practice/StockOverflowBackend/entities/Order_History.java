@@ -3,6 +3,8 @@ package com.practice.StockOverflowBackend.entities;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 @Table(name = "order_history")
@@ -11,15 +13,20 @@ public class Order_History {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timeOrdered;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timeCompleted;
 
-    // Foreign key relationship: Many orders belong to one stock
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "symbol_id", nullable = false)
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Stocks stock;
+
+    public void setOrderId(int i) {
+        this.orderId = i;
+    }
+
 
     public enum OrderTypeEnum {
         LIMIT,

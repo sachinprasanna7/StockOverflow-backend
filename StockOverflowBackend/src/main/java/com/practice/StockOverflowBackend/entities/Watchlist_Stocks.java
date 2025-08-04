@@ -7,6 +7,13 @@ import jakarta.persistence.*;
 @Table(name = "watchlist_stocks")
 public class Watchlist_Stocks {
     public Watchlist_Stocks(){}
+
+    public Watchlist_Stocks(int watchlistId, int symbolId,Stocks stock, Watchlist watchlist) {
+        this.stock = stock;
+        this.watchlist = watchlist;
+        this.compositeKey = new WatchlistStockCompositeKey(watchlistId, symbolId);
+
+    }
     @EmbeddedId
     private WatchlistStockCompositeKey compositeKey;
 
@@ -14,9 +21,33 @@ public class Watchlist_Stocks {
         this.compositeKey= compositeKey;
     }
 
+    @MapsId("symbolId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symbol_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Stocks stock;
+
+    @MapsId("watchlistId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "watchlist_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private Watchlist watchlist;
     public int getWatchlistId() { return compositeKey.getWatchlistId(); }
 
     public int getSymbolId() { return compositeKey.getSymbolId(); }
+    public void setStock(Stocks stock) {
+        this.stock = stock;
+    }
+
+    public void setWatchlist(Watchlist watchlist) {
+        this.watchlist = watchlist;
+    }
+    public Watchlist getWatchlist() {
+        return watchlist;
+    }
+    public Stocks getStock() {
+        return stock;
+    }
 
     @Override
     public String toString() {

@@ -65,17 +65,10 @@ public class OrderHistoryController {
                 .headers(headers)
                 .body(savedOrder);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable int id) {
-        service.deleteOrder(id);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Deleted-Id", String.valueOf(id));
-
-        return ResponseEntity
-                .noContent()
-                .headers(headers)
-                .build();
+    @GetMapping("/search")
+    public List<Order_History> searchOrdersByStockName(@RequestParam String name) {
+        return service.searchOrdersByStockNameOrSymbol(name);
     }
+
+
 }
