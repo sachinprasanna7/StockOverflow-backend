@@ -1,6 +1,7 @@
-package com.practice.StockOverflowBackend.controllers;
+package com.practice.StockOverflowBackend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.practice.StockOverflowBackend.controllers.OrderHistoryController;
 import com.practice.StockOverflowBackend.entities.Order_History;
 import com.practice.StockOverflowBackend.entities.Stocks;
 import com.practice.StockOverflowBackend.services.OrderHistoryService;
