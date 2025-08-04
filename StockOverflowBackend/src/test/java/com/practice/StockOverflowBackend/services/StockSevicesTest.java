@@ -1,8 +1,7 @@
-package com.practice.StockOverflowBackend;
+package com.practice.StockOverflowBackend.services;
 
 import com.practice.StockOverflowBackend.entities.Stocks;
 import com.practice.StockOverflowBackend.repositories.StocksRepository;
-import com.practice.StockOverflowBackend.services.StockService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;

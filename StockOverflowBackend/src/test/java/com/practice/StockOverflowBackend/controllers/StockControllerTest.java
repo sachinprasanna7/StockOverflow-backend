@@ -1,6 +1,5 @@
-package com.practice.StockOverflowBackend;
+package com.practice.StockOverflowBackend.controllers;
 
-import com.practice.StockOverflowBackend.controllers.StocksController;
 import com.practice.StockOverflowBackend.entities.Stocks;
 import com.practice.StockOverflowBackend.services.StockService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
