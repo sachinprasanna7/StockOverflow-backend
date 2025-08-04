@@ -23,6 +23,11 @@ public class Order_History {
     @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Stocks stock;
 
+    public void setOrderId(int i) {
+        this.orderId = i;
+    }
+
+
     public enum OrderTypeEnum {
         LIMIT,
         MARKET,
