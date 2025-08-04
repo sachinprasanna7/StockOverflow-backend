@@ -1,8 +1,7 @@
-package com.practice.StockOverflowBackend;
+package com.practice.StockOverflowBackend.services;
 
 import com.practice.StockOverflowBackend.entities.Watchlist;
 import com.practice.StockOverflowBackend.repositories.WatchlistRepository;
-import com.practice.StockOverflowBackend.services.WatchlistService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

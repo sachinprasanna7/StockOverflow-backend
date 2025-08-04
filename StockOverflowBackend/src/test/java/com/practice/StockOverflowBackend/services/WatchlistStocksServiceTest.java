@@ -1,4 +1,4 @@
-package com.practice.StockOverflowBackend;
+package com.practice.StockOverflowBackend.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -12,7 +12,6 @@ import com.practice.StockOverflowBackend.repositories.StocksRepository;
 import com.practice.StockOverflowBackend.repositories.WatchlistRepository;
 import com.practice.StockOverflowBackend.repositories.WatchlistStocksRepository;
 
-import com.practice.StockOverflowBackend.services.WatchlistStocksService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
