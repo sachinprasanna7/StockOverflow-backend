@@ -26,9 +26,6 @@ public class WatchlistStocksController {
     }
 
 
-
-
-
     @DeleteMapping(path="/deleteWatchlistStocksById")
         public @ResponseBody void deleteWatchlistStocksById(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
            watchlistStocksService.deleteWatchlistStocksBySymbolId(watchlistStocks);
