@@ -16,4 +16,6 @@ public interface WatchlistStocksRepository extends JpaRepository<Watchlist_Stock
     List<Watchlist_Stocks> findByCompositeKeySymbolId(int symbolId);
     List<Watchlist_Stocks> findByCompositeKeyWatchlistIdAndCompositeKeySymbolId(int watchlistId, int symbolId);
     void deleteByCompositeKeyWatchlistIdAndCompositeKeySymbolId(int watchlistId, int symbolId);
+    boolean existsByCompositeKey(WatchlistStockCompositeKey compositeKey);
+
 }

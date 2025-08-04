@@ -1,40 +1,37 @@
 package com.practice.StockOverflowBackend.controllers;
 
 import com.practice.StockOverflowBackend.compositeKeys.WatchlistStockCompositeKey;
-
 import com.practice.StockOverflowBackend.dtos.WatchlistWithStocksDTO;
-import com.practice.StockOverflowBackend.entities.Watchlist_Stocks;
 import com.practice.StockOverflowBackend.services.WatchlistStocksService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping(path="/watchlistStocks")
+@RequestMapping(path = "/watchlistStocks")
 public class WatchlistStocksController {
+
     @Autowired
-    public WatchlistStocksService watchlistStocksService;
+    private WatchlistStocksService watchlistStocksService;
 
-    @PostMapping(path="/addWatchlistStocks")
-    public @ResponseBody void addWatchlistStocks(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
-        //System.out.println(watchlistStocks);
+    // Add a stock to a watchlist
+    @PostMapping(path = "/add")
+    public ResponseEntity<Void> addWatchlistStocks(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
         watchlistStocksService.addWatchlistStocks(watchlistStocks);
+        return ResponseEntity.status(201).build();  // 201 Created, no body
     }
 
-    @GetMapping(path="/getWatchlistStocks/{id}")
-    public @ResponseBody WatchlistWithStocksDTO getWatchlistStocksById(@PathVariable int id) {
-        return watchlistStocksService.getWatchlistStocksById(id);
+    // Get all stocks in a watchlist by watchlistId
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<WatchlistWithStocksDTO> getWatchlistStocksById(@PathVariable int id) {
+        WatchlistWithStocksDTO dto = watchlistStocksService.getWatchlistStocksById(id);
+        return ResponseEntity.ok(dto);  // 200 OK with body
     }
 
-
-
-
-
-    @DeleteMapping(path="/deleteWatchlistStocksById")
-        public @ResponseBody void deleteWatchlistStocksById(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
-           watchlistStocksService.deleteWatchlistStocksBySymbolId(watchlistStocks);
-        }
-
+    // Delete a stock from a watchlist by composite key
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<Void> deleteWatchlistStocksById(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
+        watchlistStocksService.deleteWatchlistStocksBySymbolId(watchlistStocks);
+        return ResponseEntity.noContent().build();  // 204 No Content
+    }
 }
-
