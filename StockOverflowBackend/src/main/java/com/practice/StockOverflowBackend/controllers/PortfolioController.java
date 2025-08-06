@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3002")
 @RestController
 @RequestMapping("/portfolio")
 public class PortfolioController {
