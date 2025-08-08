@@ -1,4 +1,4 @@
-package com.practice.StockOverflowBackend.exceptions;
+package com.practice.StockOverflowBackend.handlers;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.practice.StockOverflowBackend.exceptions.BadRequestException;

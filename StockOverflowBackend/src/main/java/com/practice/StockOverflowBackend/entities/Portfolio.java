@@ -56,7 +56,7 @@ public class Portfolio {
         return "Portfolio{" +
                 "symbolId=" + symbolId +
                 ", stockQuantity=" + stockQuantity +
-                ", moneyInvested=" + moneyInvested +
+                ", Average Stock Value=" + moneyInvested +
                 '}';
     }
 }

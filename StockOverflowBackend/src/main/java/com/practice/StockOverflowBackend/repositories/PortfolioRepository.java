@@ -2,11 +2,12 @@ package com.practice.StockOverflowBackend.repositories;
 
 import com.practice.StockOverflowBackend.entities.Portfolio;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 
-@Repository
 public interface PortfolioRepository extends JpaRepository<Portfolio, Integer> {
-    // JpaRepository provides basic CRUD operations, no need to define methods here
-    // Additional custom methods can be defined if needed
+
+
+    Optional<Portfolio> findBySymbolId(int symbolId);
+
 }
