@@ -88,21 +88,15 @@ public class WatchlistStocksService {
         }
     }
 
-    public List<WatchlistWithStocksDTO> getWatchlistStocks(){
+    public List<WatchlistWithStocksDTO> getWatchlistStocks() {
         try {
-            List<Watchlist_Stocks> watchlistStocks = watchlistStocksRepository.findAll();
+            List<Watchlist> allWatchlists = watchlistRepository.findAll();
 
-            return watchlistStocks.stream()
-                    .collect(Collectors.groupingBy(ws -> ws.getWatchlist().getWatchlistId()))
-                    .entrySet()
-                    .stream()
-                    .map(entry -> {
-                        Integer watchlistId = entry.getKey();
-                        List<Watchlist_Stocks> groupedStocks = entry.getValue();
+            return allWatchlists.stream()
+                    .map(watchlist -> {
+                        List<Watchlist_Stocks> stocksInWatchlist = watchlistStocksRepository.findByCompositeKeyWatchlistId(watchlist.getWatchlistId());
 
-                        String watchlistName = groupedStocks.get(0).getWatchlist().getWatchlistName();
-
-                        List<StockDTO> stockDTOs = groupedStocks.stream()
+                        List<StockDTO> stockDTOs = stocksInWatchlist.stream()
                                 .map(ws -> {
                                     Stocks stock = ws.getStock();
                                     return new StockDTO(
@@ -114,16 +108,18 @@ public class WatchlistStocksService {
                                 .collect(Collectors.toList());
 
                         return new WatchlistWithStocksDTO(
-                                watchlistId,
-                                watchlistName,
+                                watchlist.getWatchlistId(),
+                                watchlist.getWatchlistName(),
                                 stockDTOs
                         );
                     })
                     .collect(Collectors.toList());
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve all watchlists with stocks");
         }
     }
+
 
     @Transactional
     public void deleteWatchlistStocksBySymbolId(WatchlistStockCompositeKey compositeKey) {
