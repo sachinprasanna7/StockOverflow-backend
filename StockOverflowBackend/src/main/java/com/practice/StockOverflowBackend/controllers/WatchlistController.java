@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@CrossOrigin(origins = "http://localhost:3002")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/watchlist")
 public class WatchlistController {

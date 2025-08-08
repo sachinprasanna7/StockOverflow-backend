@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WatchlistStocksService {
@@ -84,6 +85,43 @@ public class WatchlistStocksService {
         } catch (Exception e) {
             // Catch other unexpected exceptions
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to add stock to watchlist");
+        }
+    }
+
+    public List<WatchlistWithStocksDTO> getWatchlistStocks(){
+        try {
+            List<Watchlist_Stocks> watchlistStocks = watchlistStocksRepository.findAll();
+
+            return watchlistStocks.stream()
+                    .collect(Collectors.groupingBy(ws -> ws.getWatchlist().getWatchlistId()))
+                    .entrySet()
+                    .stream()
+                    .map(entry -> {
+                        Integer watchlistId = entry.getKey();
+                        List<Watchlist_Stocks> groupedStocks = entry.getValue();
+
+                        String watchlistName = groupedStocks.get(0).getWatchlist().getWatchlistName();
+
+                        List<StockDTO> stockDTOs = groupedStocks.stream()
+                                .map(ws -> {
+                                    Stocks stock = ws.getStock();
+                                    return new StockDTO(
+                                            stock.getSymbol_id(),
+                                            stock.getSymbol(),
+                                            stock.getCompanyName()
+                                    );
+                                })
+                                .collect(Collectors.toList());
+
+                        return new WatchlistWithStocksDTO(
+                                watchlistId,
+                                watchlistName,
+                                stockDTOs
+                        );
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to retrieve all watchlists with stocks");
         }
     }
 
