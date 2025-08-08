@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,48 +20,58 @@ public class PortfolioService {
     }
 
     public void buyStock(int symbolId, int quantity, BigDecimal pricePerStock) {
-        BigDecimal investment = pricePerStock.multiply(BigDecimal.valueOf(quantity));
+        Optional<Portfolio> existing = portfolioRepository.findBySymbolId(symbolId);
 
-        Optional<Portfolio> existingEntry = portfolioRepository.findById(symbolId);
+        if (existing.isPresent()) {
+            Portfolio portfolio = existing.get();
+            // Increase quantity
+            System.out.println("Old quantity: " + (portfolio.getStockQuantity() ));
+            System.out.println("New quantity: " + (portfolio.getStockQuantity() + quantity));
+            BigDecimal totalCostOld = portfolio.getMoneyInvested().multiply(BigDecimal.valueOf(portfolio.getStockQuantity()));
+            BigDecimal totalCostNew = pricePerStock.multiply(BigDecimal.valueOf(quantity));
+            BigDecimal avgPrice = (totalCostOld.add(totalCostNew))
+                    .divide(BigDecimal.valueOf(portfolio.getStockQuantity() + quantity), BigDecimal.ROUND_HALF_UP);
+            System.out.println(totalCostOld);
+            System.out.println(totalCostNew);
+            System.out.println(avgPrice);
+            portfolio.setStockQuantity(portfolio.getStockQuantity() + quantity);
 
-        if (existingEntry.isPresent()) {
-            Portfolio p = existingEntry.get();
-            p = new Portfolio(
-                    p.getSymbolId(),
-                    p.getStockQuantity() + quantity,
-                    p.getMoneyInvested().add(investment)
-            );
-            portfolioRepository.save(p);
+
+            // Optionally update average buy price
+
+
+            portfolio.setMoneyInvested(avgPrice);
+            portfolioRepository.save(portfolio);
+
         } else {
-            Portfolio newEntry = new Portfolio(symbolId, quantity, investment);
-            portfolioRepository.save(newEntry);
+            Portfolio newPortfolio = new Portfolio();
+            newPortfolio.setSymbolId(symbolId);
+            newPortfolio.setStockQuantity(quantity);
+            newPortfolio.setMoneyInvested(pricePerStock);
+            portfolioRepository.save(newPortfolio);
         }
     }
 
     public void sellStock(int symbolId, int quantity, BigDecimal pricePerStock) throws Exception {
-        Optional<Portfolio> existingEntry = portfolioRepository.findById(symbolId);
+        Optional<Portfolio> existing = portfolioRepository.findBySymbolId(symbolId);
 
-        if (existingEntry.isPresent()) {
-            Portfolio p = existingEntry.get();
+        if (existing.isPresent()) {
+            Portfolio portfolio = existing.get();
 
-            if (p.getStockQuantity() < quantity) {
-                throw new Exception("Not enough stock to sell.");
+            if (portfolio.getStockQuantity() < quantity) {
+                throw new Exception("Not enough quantity to sell!");
             }
 
-            int remainingQuantity = p.getStockQuantity() - quantity;
-            BigDecimal averagePriceOfInvestment = p.getMoneyInvested().divide(BigDecimal.valueOf(p.getStockQuantity()), 4, RoundingMode.HALF_UP);
-            BigDecimal reduction = averagePriceOfInvestment.multiply(BigDecimal.valueOf(quantity));
-            BigDecimal remainingInvestment = p.getMoneyInvested().subtract(reduction);
+            int updatedQuantity = portfolio.getStockQuantity() - quantity;
 
-            if (remainingQuantity == 0) {
-                portfolioRepository.deleteById(symbolId);
+            if (updatedQuantity == 0) {
+                portfolioRepository.delete(portfolio);
             } else {
-                Portfolio updated = new Portfolio(symbolId, remainingQuantity, remainingInvestment);
-                portfolioRepository.save(updated);
+                portfolio.setStockQuantity(updatedQuantity);
+                portfolioRepository.save(portfolio);
             }
-
         } else {
-            throw new Exception("Stock not found in portfolio.");
+            throw new Exception("Stock not found in portfolio!");
         }
     }
 }
