@@ -1,0 +1,32 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: n3u3da!
+      MYSQL_DATABASE: stocks_overflow
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-pn3u3da!"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    image: maven:3.9-eclipse-temurin-17
+    working_dir: /app
+    volumes:
+      - ./StockOverflowBackend:/app
+    ports:
+      - "8080:8080"
+    network_mode: "host"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: mvn spring-boot:run
+
+volumes:
+  db_data:

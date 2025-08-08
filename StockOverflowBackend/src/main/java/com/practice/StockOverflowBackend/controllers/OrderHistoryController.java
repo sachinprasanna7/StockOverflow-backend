@@ -1,4 +1,4 @@
-package com.practice.StockOverflowBackend.controllers;
+package com.practice.StockOverflowBackend.Controllers;
 
 import com.practice.StockOverflowBackend.entities.Order_History;
 import com.practice.StockOverflowBackend.services.OrderHistoryService;
@@ -7,8 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-
-@CrossOrigin(origins = "http://localhost:3002")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/orders")
 public class OrderHistoryController {

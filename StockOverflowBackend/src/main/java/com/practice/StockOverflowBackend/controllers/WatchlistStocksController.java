@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/watchlistStocks")
 public class WatchlistStocksController {
@@ -25,6 +28,12 @@ public class WatchlistStocksController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<WatchlistWithStocksDTO> getWatchlistStocksById(@PathVariable int id) {
         WatchlistWithStocksDTO dto = watchlistStocksService.getWatchlistStocksById(id);
+        return ResponseEntity.ok(dto);  // 200 OK with body
+    }
+
+    @GetMapping(path = "/getAll")
+    public ResponseEntity<List<WatchlistWithStocksDTO>> getWatchlistStocks() {
+        List<WatchlistWithStocksDTO> dto = watchlistStocksService.getWatchlistStocks();
         return ResponseEntity.ok(dto);  // 200 OK with body
     }
 

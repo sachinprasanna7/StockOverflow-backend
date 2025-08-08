@@ -6,7 +6,7 @@ import os
 folder_path = 'data/recent_data/'
 
 base_api_uri = 'https://marketdata.neueda.com/API/StockFeed/GetStockPricesForSymbol/[Ticker]?HowManyValues=[N]'
-sample_symbol = 'cop'
+sample_symbol = 'cpgx'
 
 def fetch_json_data(url):
     """
@@ -42,7 +42,7 @@ def store_json_data(data, filename):
 
 def get_recent_data(symbol):
     file_name = f"{folder_path}{symbol}.json"
-    data = fetch_json_data(base_api_uri.replace('[Ticker]', symbol).replace('[N]', '4000'))
+    data = fetch_json_data(base_api_uri.replace('[Ticker]', symbol).replace('[N]', '21600'))
     store_json_data(data, file_name)
     print(f"Recent data stored in {file_name} successfully.")
     return data
