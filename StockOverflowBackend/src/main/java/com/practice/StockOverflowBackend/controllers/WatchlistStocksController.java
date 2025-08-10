@@ -38,9 +38,12 @@ public class WatchlistStocksController {
     }
 
     // Delete a stock from a watchlist by composite key
-    @DeleteMapping(path = "/delete")
-    public ResponseEntity<Void> deleteWatchlistStocksById(@RequestBody WatchlistStockCompositeKey watchlistStocks) {
-        watchlistStocksService.deleteWatchlistStocksBySymbolId(watchlistStocks);
-        return ResponseEntity.noContent().build();  // 204 No Content
-    }
-}
+    @DeleteMapping("/delete/{watchlistId}/{symbolId}")
+    public ResponseEntity<Void> deleteWatchlistStocksById(
+            @PathVariable int watchlistId,
+            @PathVariable int symbolId) {
+        watchlistStocksService.deleteWatchlistStocksBySymbolId(
+                new WatchlistStockCompositeKey(watchlistId, symbolId)
+        );
+        return ResponseEntity.noContent().build();
+    }}
