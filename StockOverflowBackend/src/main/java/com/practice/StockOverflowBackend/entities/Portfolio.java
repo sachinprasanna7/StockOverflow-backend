@@ -13,7 +13,7 @@ public class Portfolio {
     @Column(name="stock_quantity", nullable = false)
     private int stockQuantity;
     @Column(name="money_invested", nullable = false)
-    private BigDecimal moneyInvested;
+    private BigDecimal averagePrice; // changed from moneyInvested to averagePrice
 
     // JPA requires a default constructor
     public Portfolio() {
