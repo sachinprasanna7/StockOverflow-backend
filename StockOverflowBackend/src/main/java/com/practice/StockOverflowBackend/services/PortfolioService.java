@@ -36,9 +36,7 @@ public class PortfolioService {
             System.out.println(avgPrice);
             portfolio.setStockQuantity(portfolio.getStockQuantity() + quantity);
 
-
             // Optionally update average buy price
-
 
             portfolio.setMoneyInvested(avgPrice);
             portfolioRepository.save(portfolio);
