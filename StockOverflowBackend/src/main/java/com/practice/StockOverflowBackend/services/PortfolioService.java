@@ -27,7 +27,7 @@ public class PortfolioService {
             // Increase quantity
             System.out.println("Old quantity: " + (portfolio.getStockQuantity() ));
             System.out.println("New quantity: " + (portfolio.getStockQuantity() + quantity));
-            BigDecimal totalCostOld = portfolio.getMoneyInvested().multiply(BigDecimal.valueOf(portfolio.getStockQuantity()));
+            BigDecimal totalCostOld = portfolio.getAveragePrice().multiply(BigDecimal.valueOf(portfolio.getStockQuantity()));
             BigDecimal totalCostNew = pricePerStock.multiply(BigDecimal.valueOf(quantity));
             BigDecimal avgPrice = (totalCostOld.add(totalCostNew))
                     .divide(BigDecimal.valueOf(portfolio.getStockQuantity() + quantity), BigDecimal.ROUND_HALF_UP);
@@ -40,14 +40,14 @@ public class PortfolioService {
             // Optionally update average buy price
 
 
-            portfolio.setMoneyInvested(avgPrice);
+            portfolio.setAveragePrice(avgPrice);
             portfolioRepository.save(portfolio);
 
         } else {
             Portfolio newPortfolio = new Portfolio();
             newPortfolio.setSymbolId(symbolId);
             newPortfolio.setStockQuantity(quantity);
-            newPortfolio.setMoneyInvested(pricePerStock);
+            newPortfolio.setAveragePrice(pricePerStock);
             portfolioRepository.save(newPortfolio);
         }
     }

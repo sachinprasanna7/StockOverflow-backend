@@ -37,7 +37,7 @@ public class PortfolioServiceTest {
         verify(portfolioRepository, times(1)).save(argThat(p ->
                 p.getSymbolId() == symbolId &&
                         p.getStockQuantity() == quantity &&
-                        p.getMoneyInvested().compareTo(investment) == 0
+                        p.getAveragePrice().compareTo(investment) == 0
         ));
     }
 
@@ -57,7 +57,7 @@ public class PortfolioServiceTest {
         verify(portfolioRepository, times(1)).save(argThat(p ->
                 p.getSymbolId() == symbolId &&
                         p.getStockQuantity() == 15 &&
-                        p.getMoneyInvested().equals(BigDecimal.valueOf(200).add(investment))
+                        p.getAveragePrice().equals(BigDecimal.valueOf(200).add(investment))
         ));
     }
 
@@ -73,7 +73,7 @@ public class PortfolioServiceTest {
 
         verify(portfolioRepository, times(1)).save(argThat(p ->
                 p.getStockQuantity() == 5 &&
-                        p.getMoneyInvested().compareTo(BigDecimal.valueOf(50)) == 0
+                        p.getAveragePrice().compareTo(BigDecimal.valueOf(50)) == 0
         ));
     }
 

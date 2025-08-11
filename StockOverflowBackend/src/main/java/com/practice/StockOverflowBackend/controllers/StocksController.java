@@ -32,6 +32,7 @@ public class StocksController {
         return stockService.getStockById(stock_id);
     }
 
+
     //use /search?query=value
     @GetMapping(path="/search")
     public @ResponseBody List<Stocks> searchStock(@RequestParam("query") String query){
