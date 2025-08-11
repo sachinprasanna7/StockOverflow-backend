@@ -53,4 +53,12 @@ public class StockService {
 //        System.out.println(stocks);
 //        stocksRepository.save(stocks);
 //    }
+public Stocks getStockBySymbol(String symbol) {
+    return stocksRepository.findBySymbolIgnoreCase(symbol)
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Stock with symbol: " + symbol + " not found"
+            ));
+}
+
 }

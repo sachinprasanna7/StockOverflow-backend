@@ -3,10 +3,12 @@ package com.practice.StockOverflowBackend.controllers;
 import com.practice.StockOverflowBackend.entities.Portfolio;
 import com.practice.StockOverflowBackend.services.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -41,6 +43,16 @@ public class PortfolioController {
             return "Sold " + quantity + " units of stock with ID: " + symbolId;
         } catch (Exception e) {
             return "Error: " + e.getMessage();
+        }
+    }
+
+    @GetMapping("/{symbolId}")
+    public ResponseEntity<?> getPortfolioBySymbolId(@PathVariable int symbolId) {
+        Optional<Portfolio> portfolioOpt = portfolioService.getPortfolioBySymbolId(symbolId);
+        if (portfolioOpt.isPresent()) {
+            return ResponseEntity.ok(portfolioOpt.get());
+        } else {
+            return ResponseEntity.status(404).body("Portfolio entry not found for symbolId: " + symbolId);
         }
     }
 }
