@@ -74,4 +74,8 @@ public class PortfolioService {
             throw new Exception("Stock not found in portfolio!");
         }
     }
+    public Optional<Portfolio> getPortfolioBySymbolId(int symbolId) {
+        return portfolioRepository.findBySymbolId(symbolId);
+    }
+
 }

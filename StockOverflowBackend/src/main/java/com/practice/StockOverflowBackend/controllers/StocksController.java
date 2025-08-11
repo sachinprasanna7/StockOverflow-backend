@@ -38,4 +38,8 @@ public class StocksController {
     public @ResponseBody List<Stocks> searchStock(@RequestParam("query") String query){
         return stockService.searchStocks(query);
     }
+    @GetMapping("/symbol/{symbol}")
+    public Stocks getStockBySymbol(@PathVariable String symbol) {
+        return stockService.getStockBySymbol(symbol);
+    }
 }

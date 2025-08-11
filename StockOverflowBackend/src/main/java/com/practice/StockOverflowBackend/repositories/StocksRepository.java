@@ -8,10 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StocksRepository extends JpaRepository<Stocks, Integer> {
 
 //    @Query("Select symbol, company_name from stocks where lower(company_name) like lower(concat('%', :query, '%')) or lower(symbol) like lower(concat('%', :query, '%'))")
 //    List<Stocks> searchByNameOrSymbol(@Param("query") String query);
+Optional<Stocks> findBySymbolIgnoreCase(String symbol);
+
 }
