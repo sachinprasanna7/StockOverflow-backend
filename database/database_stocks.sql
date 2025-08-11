@@ -53,6 +53,11 @@ create table order_history(
 	order_status enum('PENDING', 'EXECUTED', 'FAILED'),
 	foreign key (symbol_id) references stocks(symbol_id)
 );
+
+CREATE TABLE user_account (     id INT PRIMARY KEY AUTO_INCREMENT,     full_name VARCHAR(100) NOT NULL,     email VARCHAR(100) UNIQUE NOT NULL,     phone_number VARCHAR(15) NOT NULL,     date_of_birth DATE NOT NULL,     address TEXT NOT NULL,     zip_code VARCHAR(10) NOT NULL,     state VARCHAR(50) NOT NULL,     demat_number VARCHAR(50) UNIQUE NOT NULL,     client_number VARCHAR(50) UNIQUE NOT NULL,     bank_account_number VARCHAR(30) NOT NULL,     ifsc_code VARCHAR(15) NOT NULL,     trading_account_money DECIMAL(15,2) DEFAULT 0.00,     stock_investments_money DECIMAL(15,2) DEFAULT 0.00 );
+
+INSERT INTO user_account (     full_name,     email,     phone_number,     date_of_birth,     address,     zip_code,     state,     demat_number,     client_number,     bank_account_number,     ifsc_code,     trading_account_money,     stock_investments_money ) VALUES (     'Santhosh Kumar',     'santhosh.kumar@gmail.com',     '+91-9876543210',     '1985-07-15',     '12/3, Nehru Street, Muthialpet',     '605003',     'Pondicherry',     'DM123456789012',     'CL987654321098',     '1234567890123456',     'HDFC0001234',     0,     0 );
+
 ALTER TABLE order_history 
 MODIFY order_id INT NOT NULL AUTO_INCREMENT;
 
