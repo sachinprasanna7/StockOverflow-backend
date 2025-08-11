@@ -53,3 +53,29 @@ create table order_history(
 	order_status enum('PENDING', 'EXECUTED', 'FAILED'),
 	foreign key (symbol_id) references stocks(symbol_id)
 );
+
+
+this is the table for uswr
+create table user_account(
+	id int primary key auto_increment,
+	full_name varchar(100) not null,
+	email varchar(100) unique not null,
+	phone_number varchar(100) not null,
+	date_of_birth date not null,
+	address text not null,
+	zip_code varchar(10) not null,
+	state varchar(50) not null,
+	demat_number varchar(50) unqiue not null,
+	client_number varchar(50) unqiue not null,
+	bank_account_number varchar(30) not null,
+	ifsc_code varchar(15) not null,
+	trading_account_money decimal(15,2) default 0.00,
+	stock_investments_money decimal(15,2) default 0.00
+);
+
+insert into user_account(
+	1, 'Santhosh Kumar', 'santhosh.kumar@gmail.com', '+91-9876543210',
+	'1985-07-15', '12/3, Nehru Street Muthialpet', '605003',
+	'Pondicherry', 'DM123456789012', 'CL987654321098',
+	'1234567890123456', 'HDFC0001234', 0, 0
+);
