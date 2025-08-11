@@ -19,10 +19,10 @@ public class Portfolio {
     public Portfolio() {
     }
 
-    public Portfolio(int symbolId, int stockQuantity, BigDecimal moneyInvested) {
+    public Portfolio(int symbolId, int stockQuantity, BigDecimal averagePrice) {
         this.symbolId = symbolId;
         this.stockQuantity = stockQuantity;
-        this.moneyInvested = moneyInvested;
+        this.averagePrice = averagePrice;
     }
 
     // Getters for JPA
@@ -34,8 +34,8 @@ public class Portfolio {
         return stockQuantity;
     }
 
-    public BigDecimal getMoneyInvested() {
-        return moneyInvested;
+    public BigDecimal getaveragePrice() {
+        return averagePrice;
     }
 
     // Setters for JPA
@@ -47,8 +47,8 @@ public class Portfolio {
         this.stockQuantity = stockQuantity;
     }
 
-    public void setMoneyInvested(BigDecimal moneyInvested) {
-        this.moneyInvested = moneyInvested;
+    public void setaveragePrice(BigDecimal averagePrice) {
+        this.averagePrice = averagePrice;
     }
 
     @Override
@@ -56,7 +56,7 @@ public class Portfolio {
         return "Portfolio{" +
                 "symbolId=" + symbolId +
                 ", stockQuantity=" + stockQuantity +
-                ", Average Stock Value=" + moneyInvested +
+                ", Average Stock Value=" + averagePrice +
                 '}';
     }
 }
