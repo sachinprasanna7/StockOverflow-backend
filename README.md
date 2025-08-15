@@ -15,7 +15,7 @@ A robust Spring Boot backend service providing REST APIs for the Stocks Overflow
 
 ## 📸 Architecture Overview
 
-![Database Schema](.database/Stock-Overflow-ER-Diagram.png)
+![Database Schema](database/Stock-Overflow-ER-Diagram.png)
 *Database schema and relationships*
 
 ## 🛠️ Prerequisites
@@ -39,7 +39,7 @@ Before you begin, make sure you have the following installed:
 - **Git** (for cloning the repository)
 - **Docker & Docker Compose** (optional, for containerized setup)
 
-> **Note**: This backend service is designed to work with the [Stocks Overflow Frontend](https://github.com/your-username/StockOverflow-frontend)
+> **Note**: This backend service is designed to work with the [Stocks Overflow Frontend](https://github.com/sachinprasanna7/StockOverflow-frotend)
 
 ## 📦 Installation & Setup
 
@@ -332,21 +332,6 @@ curl http://localhost:8080/actuator/health
 - Check database indexes
 - Monitor connection pool settings
 
-## 📊 Tech Stack
-
-- **Java 17** - Programming language (OpenJDK 17.0.15 LTS)
-- **Spring Boot 3.x** - Application framework
-- **Spring Data JPA** - Data persistence
-- **Spring Security** - Authentication and authorization
-- **MySQL 8.0.43** - Primary database
-- **Maven** - Build and dependency management
-- **Docker & Docker Compose** - Containerization
-- **JUnit 5** - Testing framework
-
-## 🤝 API Integration
-
-This backend is designed to work with:
-- **Frontend Repository**: [StockOverflow-frontend](https://github.com/your-username/StockOverflow-frontend)
 
 ## 📞 Contributors
 
