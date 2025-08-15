@@ -9,9 +9,7 @@ public class Watchlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int watchlistId;
-
-
-
+    
     private String name;
 
     // Default constructor required by JPA

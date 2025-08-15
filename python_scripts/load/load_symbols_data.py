@@ -1,9 +1,17 @@
 import mysql.connector
 import json
+from dotenv import load_dotenv
+import os
 
-cnx = mysql.connector.connect(user='root', password='n3u3da!',
-                              host='127.0.0.1',
-                              database='stocks_overflow')
+# Load variables from .env file
+load_dotenv()
+
+cnx = mysql.connector.connect(
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    host='127.0.0.1',
+    database='stocks_overflow'
+)
 
 # check if the connection is successful
 if cnx.is_connected():
