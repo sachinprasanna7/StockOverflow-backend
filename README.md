@@ -39,7 +39,7 @@ Before you begin, make sure you have the following installed:
 - **Git** (for cloning the repository)
 - **Docker & Docker Compose** (optional, for containerized setup)
 
-> **Note**: This backend service is designed to work with the [Stocks Overflow Frontend](https://github.com/sachinprasanna7/StockOverflow-frotend)
+> **Note**: This backend service is designed to work with the [Stocks Overflow Frontend](https://github.com/sachinprasanna7/StockOverflow-frotend). After starting the backend servers, ensure the frontend servers are running to leverage full capability of the project.
 
 ## 📦 Installation & Setup
 
